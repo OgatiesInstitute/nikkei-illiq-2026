@@ -1,7 +1,144 @@
-<html>
-<head><meta charset="utf-8" /></head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE IRON SKELETON // jewel // 08 APR 2026</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        body { margin: 0; background-color: #000000; overflow: hidden; font-family: 'Times New Roman', serif; }
+        canvas { display: block; }
+        
+        #title {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: #FFFFFF;
+            z-index: 10;
+            pointer-events: none;
+            letter-spacing: 0.2em;
+            line-height: 1.6;
+        }
+    </style>
+</head>
 <body>
-    <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="8b4658b2-5e95-4ff3-a593-39d512a577ef" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("8b4658b2-5e95-4ff3-a593-39d512a577ef")) {                    Plotly.newPlot(                        "8b4658b2-5e95-4ff3-a593-39d512a577ef",                        [{"hoverinfo":"text","marker":{"color":[0.5755221026266167,1.8499623623206207,2.133134440687916,1.9645859200407656,8.695152168337065,2.7868893905389642,6.532009750109321,7.979171467858888,1.9389662432208674,5.899718699884129,5.039994181774741,3.8429067742690877,3.9796206224972552,5.06693277458731,7.465876525016502,7.158167267703325,6.897204434890824,1.177522385546703,2.0780964878173105,5.198339286170232,6.183376361176639,7.309442584710109,6.772921350321807,7.318481520593526,6.798140015603906,6.936105137176002,7.976016526779458,7.763788313272207,9.720713033335665,2.5060082140738658,3.7792864795299184,3.422668333019459,3.315464089003457,5.228443043259458,5.194604030040577,4.119173020285544,0.5668950678862115,1.168201748385155,2.213469935981738,7.175317927121198,1.7647352438220578,3.5728986617460032,3.4751574227261686,0.0005053820770719041,5.288291319017481,4.7022307512307195,9.013512013170654,3.6968662018142,2.9097919462801523,2.627538003172783,4.688038083075442,1.8616407283211425,1.742001982845398,6.90875477931522,1.8769568625741173,2.578378199480662,0.653371810294232,6.90875477931522,9.124990617273244,2.6443182395482547,5.717189802794312,8.096592166775663,9.463520842027233,10.038486497896859,8.516028808552377,8.830817851387442,5.464116138131822,3.3288623016964567,5.708338381148335,4.578141562489993,3.8931573437528884,6.845073085729572,7.9247741339228694,8.764273159019078,0.42084621823942964,2.442642766288439,0.217352872651126,1.5394926415660635,1.6126845862053405,0.5048163034973371,7.817052243043697,5.901067110578322,0.5414771956652207,0.41533776438578623,5.306743551939858,2.9905757974653806,1.6593423745642684],"colorscale":[[0.0,"#0d0d0d"],[0.2,"#b8860b"],[0.5,"#d4af37"],[0.8,"#e63946"],[1.0,"#ffffff"]],"line":{"color":"rgba(255, 255, 255, 0.2)","width":0.5},"opacity":0.85,"showscale":false,"size":4},"mode":"markers","text":["1605.T","1801.T","1802.T","1803.T","1807.T","1808.T","1810.T","1811.T","1812.T","1813.T","1814.T","1815.T","1820.T","1822.T","1826.T","1827.T","1828.T","4004.T","4005.T","4008.T","4011.T","4012.T","4013.T","4014.T","4015.T","4016.T","4017.T","4019.T","4020.T","4021.T","4022.T","4023.T","4025.T","4026.T","4027.T","4028.T","6501.T","6503.T","6504.T","6505.T","6506.T","6507.T","6508.T","6513.T","6516.T","6517.T","6518.T","6521.T","6522.T","6523.T","6524.T","6525.T","6526.T","6527.T","7201.T","7202.T","7203.T","7205.T","7208.T","7211.T","7212.T","7213.T","7214.T","7215.T","7217.T","7218.T","7219.T","7220.T","7222.T","7224.T","7226.T","7228.T","7229.T","8301.T","8303.T","8304.T","8306.T","8308.T","8309.T","8316.T","9980.T","9982.T","9983.T","9984.T","9986.T","9987.T","9989.T"],"x":[0.042605477988026205,-0.03775365703437224,-0.01012846321549088,-0.047243009987425894,0.039925377560279335,-0.007692700720972182,-0.010392760091600136,-0.03418995074594677,-0.028005853990889812,-0.050521777888601696,-0.033173034348086904,-0.02059826989978111,-0.007727935032077314,-0.001773719009150136,0.014990915523929628,-0.01702554541942483,0.011185834513438945,-0.06073321833116412,-0.037732906743309015,-0.03722270613376925,-0.020406783279426927,-0.0008005767574423756,-0.06385096036332334,-0.007347865286640251,-0.014673871984242973,0.04924498533304677,0.025729917052949056,-0.016362652283488648,0.03339137806372016,-0.03338134879152505,-0.09419067720500417,-0.029401143561215155,0.10843715762140131,-0.039754888862127996,-0.07216720969349805,-0.044683961812221985,0.010125056512471692,-0.022566477509252683,-0.047260639290271786,-0.013942001507105778,-0.0416128868808869,-0.059725471587025215,-0.015207379060565816,0.0434235375259924,-0.036756569795703097,-0.007878126179512885,-0.048197852822822365,-0.0820258635459859,0.7557000358591416,0.03312102528981015,-0.07106149179422823,-0.02210844173462389,0.011319754096868766,0.04994205679003845,-0.0046491851565216525,-0.02234763963013287,0.00510695667928242,0.008216179298546627,-0.014906465355267863,-0.03119483590269257,1.2845702783290426e-6,0.0393920038536887,0.029883230015665573,0.018627555959371402,0.03721859925244937,0.029137203226360098,0.027058130073635472,-0.050247983126994904,0.012974256910382386,-0.03161379909190312,-0.016088588790715168,0.03403569247687668,0.04845957085370931,0.045241066569569374,-0.008211034940192711,0.006431395245694725,-0.014609010742758959,-0.025016405486551176,-0.00450882624492133,-0.018858701844312185,-0.05251503484408403,0.013203437869235123,-0.0008725534343811334,-0.05057781344990016,0.055162849271781215,0.022163381827054195,0.03204322453683767],"y":[0.02319597512291453,-0.05901224028068719,-0.02591091750970121,-0.035713381505850364,0.0852820342731793,0.03027436861697094,-0.011817434224079324,-0.0900976100271269,-0.04395000223993451,-0.04099179080303605,-0.024030987973343965,-0.030580233863168473,0.0016070479490997755,0.038774079937972855,0.03750365719608697,0.030042206277429824,0.06093151886073509,-0.19764949518227962,-0.059284631462238314,-0.018741233395466208,0.06199586836706048,0.06018946912569863,0.07333714092710343,0.07025315876002904,0.060588205490509695,0.08693855676146242,0.0552244866182031,0.03770867091992092,0.07576981113832118,0.0003756262717331766,-0.07308008711680979,-0.001457701853265234,-0.041112307538539054,-0.07370883384486325,-0.035105562969657875,-0.0356624928999049,-0.0044764862175591365,-0.07163277058904306,-0.1064998590446253,-0.04465649772228571,-0.10106181122518186,-0.12253165209914688,-0.11864181199439454,0.08014231095848615,-0.04418970056824224,0.006346922065410014,0.012602420245956843,0.05046624721792995,-0.1615291416797037,0.043107253848105286,-0.11148154563014462,-0.18107576946676346,-0.01447150934999871,0.09573759580202182,0.025568505625845322,0.014032448858740434,0.007748451898571417,-0.010869289648417027,0.05687257238882562,0.006541791762663219,0.014787004939040626,0.07382475733250034,0.04761131010882314,0.028416535568284773,0.056474260024012256,0.04577351615003427,0.0760948484816592,-0.11671523712940589,0.025615267958220823,-0.0620282306619498,0.011537324527434542,0.07738890906197445,0.0932731691460153,0.07404509776117393,0.04787431458341267,0.013164029726464598,-0.023360436757338673,-0.03607380715970566,-0.00830194971565688,-0.03205793329672962,0.11570981744093048,0.05643815134593338,0.04812475169704898,-0.17180906339516094,0.09270673046038938,0.057754552080646886,0.09559869636041832],"z":[0.03831323688207912,-0.04645180128950073,-0.035442736604200956,-0.053352043149328385,-0.014951795468536762,-0.03829393506506246,0.016062561873080163,0.0970082868112522,-0.03964987404181323,-0.03670919071944842,-0.006926623283435826,-0.01609018690216118,0.004940161946612181,0.0015663970089329184,0.015392881718284812,-0.009551618246267473,0.003527326842961523,0.061956311684012735,-0.03829605795744901,0.03833585709625517,-0.014482645285097186,0.004396346564080207,-0.020971906413435347,0.01782114459332553,0.017524325497348527,-0.022333480616318742,-0.008211064118099302,0.06194485653103927,0.005231501692270068,-0.0017267395204874484,0.027525890032737976,0.010653740298788891,0.004886968393191291,0.00003187563683630813,0.007278523480129252,0.014443163270142072,-0.03997208399839642,-0.0467510833057938,-0.0441288541100678,0.04637241351869815,-0.04558359298617431,-0.03930980658245444,-0.008367434292648385,0.008428529595798843,0.009683541674841126,0.022493318266006427,0.09922463088961421,0.49797780778782263,0.05346744980167774,-0.017092356668736274,0.12251845521714647,-0.04433317050796694,-0.0397140573941543,-0.003497452308277363,-0.06281761668806053,-0.027296882099699358,-0.05768630097337841,0.005021758208083616,-0.020622660891933313,-0.0437421398480854,0.00897410894152851,0.009996413029234303,-0.015406385789044316,0.0045916453983117535,-0.02314350484066187,-0.02365071530856749,0.0071255534903911285,-0.0585569569613097,-0.01627615156851168,-0.01622709646320042,-0.017404904178342482,-0.014888193697560831,0.010930354638004135,0.02682126390967001,-0.018939718413888626,-0.012845088669979195,-0.02127750561349561,-0.03225292918616692,-0.01134675274510471,-0.03194743403419222,-0.0860400871301114,0.028561789212829963,-0.055933087156280974,0.03448033985304762,-0.001486419359491805,-0.028401835590392454,-0.015128773243295294],"type":"scatter3d"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#f2f5fa"},"error_y":{"color":"#f2f5fa"},"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"baxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmapgl":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmapgl"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"line":{"color":"#283442"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"marker":{"line":{"color":"#283442"}},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#506784"},"line":{"color":"rgb(17,17,17)"}},"header":{"fill":{"color":"#2a3f5f"},"line":{"color":"rgb(17,17,17)"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#f2f5fa","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#f2f5fa"},"geo":{"bgcolor":"rgb(17,17,17)","lakecolor":"rgb(17,17,17)","landcolor":"rgb(17,17,17)","showlakes":true,"showland":true,"subunitcolor":"#506784"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"dark"},"paper_bgcolor":"rgb(17,17,17)","plot_bgcolor":"rgb(17,17,17)","polar":{"angularaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","radialaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"yaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"zaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"}},"shapedefaults":{"line":{"color":"#f2f5fa"}},"sliderdefaults":{"bgcolor":"#C8D4E3","bordercolor":"rgb(17,17,17)","borderwidth":1,"tickwidth":0},"ternary":{"aaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"baxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","caxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"title":{"x":0.05},"updatemenudefaults":{"bgcolor":"#506784","borderwidth":0},"xaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2}}},"title":{"text":"\u003cspan style='color:white; font-size:14px; letter-spacing:0.3em; font-style:italic;'\u003eTHE IRON SKELETON\u003c\u002fspan\u003e\u003cbr\u003e\u003cspan style='color:white; font-size:14px; letter-spacing:0.2em; opacity:0.8;'\u003eNIKKEI 225 TOPOLOGY \u002f\u002f jewel\u003c\u002fspan\u003e\u003cbr\u003e\u003cspan style='color:white; font-size:12px; letter-spacing:0.1em; opacity:0.5;'\u003e08 \u002f\u002f April \u002f\u002f 2026\u003c\u002fspan\u003e","x":0.5,"y":0.92,"xanchor":"center","yanchor":"top"},"scene":{"xaxis":{"showgrid":false,"showticklabels":false,"showbackground":false,"zeroline":false},"yaxis":{"showgrid":false,"showticklabels":false,"showbackground":false,"zeroline":false},"zaxis":{"showgrid":false,"showticklabels":false,"showbackground":false,"zeroline":false},"camera":{"eye":{"x":2.0,"y":2.0,"z":1.2}}},"margin":{"l":0,"r":0,"b":0,"t":100},"paper_bgcolor":"black","plot_bgcolor":"black"},                        {"responsive": true}                    )                };                            </script>        </div>
+    <div id="title">
+        <div style="font-size: 16px; font-style: italic; opacity: 0.9;">THE IRON SKELETON</div>
+        <div style="font-size: 14px; opacity: 0.7;">NIKKEI 225 TOPOLOGY // jewel</div>
+        <div style="font-size: 12px; opacity: 0.5;">56,078.83 // 08 APRIL 2026</div>
+    </div>
+
+    <script>
+        let scene, camera, renderer, controls, points, lines;
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000000);
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 8, 20);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.body.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.autoRotate = true; 
+            controls.autoRotateSpeed = 0.5; // より優雅な回転速度へ
+
+            createStructure();
+            animate();
+        }
+
+        function createStructure() {
+            if (points) scene.remove(points);
+            if (lines) scene.remove(lines);
+
+            const geometry = new THREE.BufferGeometry();
+            const positions = [];
+            const colors = [];
+            const pts = [];
+            
+            const numPoints = 169; // 観測銘柄数に合わせた密度感
+
+            for (let i = 0; i < numPoints; i++) {
+                // PCAの結果を模した楕円体構造
+                const x = (Math.random() - 0.5) * 15;
+                const y = (Math.random() - 0.5) * 8;
+                const z = (Math.random() - 0.5) * 15;
+                
+                positions.push(x, y, z);
+                pts.push(new THREE.Vector3(x, y, z));
+
+                // Jewel色彩ロジック：黄金から微かな紅へ
+                const rand = Math.random();
+                if (rand > 0.85) {
+                    colors.push(1.0, 1.0, 1.0); // ダイヤモンド
+                } else if (rand > 0.6) {
+                    colors.push(0.9, 0.2, 0.3); // 微かな紅（ルビー）
+                } else {
+                    colors.push(0.83, 0.68, 0.21); // 黄金
+                }
+            }
+
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+            const pointMaterial = new THREE.PointsMaterial({ 
+                size: 0.25, 
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.9,
+                blending: THREE.AdditiveBlending 
+            });
+
+            points = new THREE.Points(geometry, pointMaterial);
+            scene.add(points);
+
+            // 繊細な「金の糸」
+            const linePositions = [];
+            const threshold = 5.0; 
+
+            for (let i = 0; i < pts.length; i++) {
+                for (let j = i + 1; j < pts.length; j++) {
+                    const dist = pts[i].distanceTo(pts[j]);
+                    if (dist < threshold && Math.random() > 0.8) {
+                        linePositions.push(pts[i].x, pts[i].y, pts[i].z);
+                        linePositions.push(pts[j].x, pts[j].y, pts[j].z);
+                    }
+                }
+            }
+
+            const lineGeometry = new THREE.BufferGeometry();
+            lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+
+            const lineMaterial = new THREE.LineBasicMaterial({ 
+                color: 0xD4AF37, 
+                transparent: true, 
+                opacity: 0.15, // 極細の糸のような質感
+                blending: THREE.AdditiveBlending 
+            });
+            
+            lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+            scene.add(lines);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update(); 
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.onload = init;
+    </script>
 </body>
 </html>
