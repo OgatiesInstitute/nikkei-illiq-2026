@@ -24,16 +24,17 @@
     <script>
         let scene, camera, renderer, controls, points, lines;
 
-        // キラメキを最大化する「潤んだ光」のテクスチャ生成
-        function createRadiantTexture() {
+        // 【改良】中心をより鋭く、強く発光させるテクスチャ
+        function createSuperRadiantTexture() {
             const canvas = document.createElement('canvas');
             canvas.width = 128; canvas.height = 128;
             const context = canvas.getContext('2d');
             const gradient = context.createRadialGradient(64, 64, 0, 64, 64, 64);
-            gradient.addColorStop(0, 'rgba(255,255,255,1.0)');   // 核：純白
-            gradient.addColorStop(0.15, 'rgba(255,255,255,0.8)'); // 芯の輝き
-            gradient.addColorStop(0.4, 'rgba(255,255,255,0.2)');  // 後光
-            gradient.addColorStop(1, 'rgba(255,255,255,0)');     // 融和
+            gradient.addColorStop(0, 'rgba(255,255,255,1.0)');   // 核心：純白（最強）
+            gradient.addColorStop(0.05, 'rgba(255,255,255,1.0)'); // 明るい範囲を拡大
+            gradient.addColorStop(0.2, 'rgba(255,255,255,0.6)');  // 中間の光
+            gradient.addColorStop(0.5, 'rgba(255,255,255,0.1)');  // 淡い余韻
+            gradient.addColorStop(1, 'rgba(255,255,255,0)');
             context.fillStyle = gradient;
             context.fillRect(0, 0, 128, 128);
             return new THREE.CanvasTexture(canvas);
@@ -41,8 +42,8 @@
 
         function init() {
             scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 10, 26);
+            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 8, 22);
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -52,7 +53,7 @@
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.autoRotate = true;
-            controls.autoRotateSpeed = 0.2; // 優雅な回転
+            controls.autoRotateSpeed = 0.25;
 
             createStructure();
             animate();
@@ -66,70 +67,67 @@
             const positions = [];
             const colors = [];
             const pts = [];
-            const numPoints = 1200; // 圧倒的な粒子密度
+            const numPoints = 1500; // 昨日の密度を超える増量
 
-            const colorDeepCrimson = new THREE.Color(0xff2200); // 鮮やかな深い紅
-            const colorBrightGold = new THREE.Color(0xffd700);  // 輝く黄金
+            const colorA = new THREE.Color(0xff1100); // 鮮烈な赤
+            const colorB = new THREE.Color(0xffcc00); // 輝く黄金
+            const colorC = new THREE.Color(0xffffff); // 発光の白
 
             for (let i = 0; i < numPoints; i++) {
-                // PCA構造を模した有機的な楕円体
                 const theta = Math.random() * Math.PI * 2;
                 const phi = Math.acos((Math.random() * 2) - 1);
-                const r = 9 + Math.random() * 3;
-                
-                const x = r * Math.sin(phi) * Math.cos(theta) * 1.5;
-                const y = r * Math.cos(phi) * 0.7;
+                const r = 7 + Math.random() * 5;
+                const x = r * Math.sin(phi) * Math.cos(theta) * 1.6;
+                const y = r * Math.cos(phi) * 0.8;
                 const z = r * Math.sin(phi) * Math.sin(theta);
 
                 positions.push(x, y, z);
                 pts.push(new THREE.Vector3(x, y, z));
 
-                // 距離による「滑らかな」Lerp（線形補間）計算
-                const t = Math.pow(r / 12, 1.5); // 補間のカーブを急に
+                const t = Math.pow(r / 12, 1.2);
                 let c = new THREE.Color();
-                c.copy(colorDeepCrimson).lerp(colorBrightGold, t);
+                if (t < 0.6) {
+                    c.copy(colorA).lerp(colorB, t / 0.6);
+                } else {
+                    c.copy(colorB).lerp(colorC, (t - 0.6) / 0.4);
+                }
                 colors.push(c.r, c.g, c.b);
             }
 
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
             geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-            // キラメキ（発光）を最大化するマテリアル設定
             const pointMaterial = new THREE.PointsMaterial({
-                size: 0.65,                    // 芯を大きく
-                map: createRadiantTexture(), // テクスチャを滑らかに
+                size: 0.8, // サイズを拡大して光の重なりを増強
+                map: createSuperRadiantTexture(),
                 vertexColors: true,
                 transparent: true,
-                opacity: 0.9,                  // 不透明度を上げて発光を強める
-                blending: THREE.AdditiveBlending, // 加算合成で白熱させる
+                opacity: 1.0, // 不透明度を最大にして発光
+                blending: THREE.AdditiveBlending,
                 depthWrite: false
             });
 
             points = new THREE.Points(geometry, pointMaterial);
             scene.add(points);
 
-            // 繊細な「金の糸（骨格）」の復活
+            // 【復活】極細の金の糸
             const linePositions = [];
             for (let i = 0; i < pts.length; i++) {
                 for (let j = i + 1; j < pts.length; j++) {
                     const dist = pts[i].distanceTo(pts[j]);
-                    // 以前より閾値を広げ、かつ乱数でランダム性を
-                    if (dist < 4.8 && Math.random() > 0.9) {
+                    if (dist < 4.0 && Math.random() > 0.92) {
                         linePositions.push(pts[i].x, pts[i].y, pts[i].z, pts[j].x, pts[j].y, pts[j].z);
                     }
                 }
             }
-
             const lineGeometry = new THREE.BufferGeometry();
             lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-
             const lineMaterial = new THREE.LineBasicMaterial({
-                color: 0xD4AF37, // 黄金色
+                color: 0xffaa00,
                 transparent: true,
-                opacity: 0.08,   // 極限まで細く、淡く（主張しすぎないように）
+                opacity: 0.15,
                 blending: THREE.AdditiveBlending
             });
-            
             lines = new THREE.LineSegments(lineGeometry, lineMaterial);
             scene.add(lines);
         }
