@@ -16,24 +16,24 @@
 </head>
 <body>
     <div id="title">
-        <div style="font-size: 14px; font-style: italic; opacity: 0.8;">THE IRON SKELETON</div>
-        <div style="font-size: 12px; opacity: 0.6;">NIKKEI 225 TOPOLOGY // jewel</div>
-        <div style="font-size: 10px; opacity: 0.4;">08 // APRIL // 2026</div>
+        <div style="font-size: 15px; font-style: italic; opacity: 0.9;">THE IRON SKELETON</div>
+        <div style="font-size: 13px; opacity: 0.7;">NIKKEI 225 TOPOLOGY // jewel</div>
+        <div style="font-size: 11px; opacity: 0.5;">08 // APRIL // 2026</div>
     </div>
 
     <script>
-        let scene, camera, renderer, controls;
+        let scene, camera, renderer, controls, points, lines;
 
-        // 超高級感を生む「潤んだ光」のテクスチャ生成
-        function createJewelTexture() {
+        // キラメキを最大化する「潤んだ光」のテクスチャ生成
+        function createRadiantTexture() {
             const canvas = document.createElement('canvas');
             canvas.width = 128; canvas.height = 128;
             const context = canvas.getContext('2d');
             const gradient = context.createRadialGradient(64, 64, 0, 64, 64, 64);
-            gradient.addColorStop(0, 'rgba(255,255,255,1.0)');   // 核：純白の輝き
-            gradient.addColorStop(0.1, 'rgba(255,255,255,0.7)'); // 芯の広がり
-            gradient.addColorStop(0.4, 'rgba(255,255,255,0.1)'); // 後光
-            gradient.addColorStop(1, 'rgba(255,255,255,0)');     // 空間への融和
+            gradient.addColorStop(0, 'rgba(255,255,255,1.0)');   // 核：純白
+            gradient.addColorStop(0.15, 'rgba(255,255,255,0.8)'); // 芯の輝き
+            gradient.addColorStop(0.4, 'rgba(255,255,255,0.2)');  // 後光
+            gradient.addColorStop(1, 'rgba(255,255,255,0)');     // 融和
             context.fillStyle = gradient;
             context.fillRect(0, 0, 128, 128);
             return new THREE.CanvasTexture(canvas);
@@ -41,10 +41,10 @@
 
         function init() {
             scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 12, 28);
+            camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 10, 26);
 
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             document.body.appendChild(renderer.domElement);
@@ -52,59 +52,86 @@
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.autoRotate = true;
-            controls.autoRotateSpeed = 0.25; // 宝石の重みを感じさせる低速回転
+            controls.autoRotateSpeed = 0.2; // 優雅な回転
 
             createStructure();
             animate();
         }
 
         function createStructure() {
+            if (points) scene.remove(points);
+            if (lines) scene.remove(lines);
+
             const geometry = new THREE.BufferGeometry();
             const positions = [];
             const colors = [];
+            const pts = [];
             const numPoints = 1200; // 圧倒的な粒子密度
 
-            const colorCrimson = new THREE.Color(0x880000); // 熟成した赤
-            const colorAmber = new THREE.Color(0xff8800);   // 琥珀
-            const colorGold = new THREE.Color(0xffe27a);    // 18Kゴールド
+            const colorDeepCrimson = new THREE.Color(0xff2200); // 鮮やかな深い紅
+            const colorBrightGold = new THREE.Color(0xffd700);  // 輝く黄金
 
             for (let i = 0; i < numPoints; i++) {
-                // PCA構造を模した優雅な螺旋・楕円体
-                const t = Math.random() * Math.PI * 2;
-                const u = Math.acos((Math.random() * 2) - 1);
-                const r = 10 * Math.pow(Math.random(), 0.5); // 中心への適度な凝縮
-
-                const x = r * Math.sin(u) * Math.cos(t) * 1.4;
-                const y = r * Math.cos(u) * 0.7;
-                const z = r * Math.sin(u) * Math.sin(t);
+                // PCA構造を模した有機的な楕円体
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos((Math.random() * 2) - 1);
+                const r = 9 + Math.random() * 3;
+                
+                const x = r * Math.sin(phi) * Math.cos(theta) * 1.5;
+                const y = r * Math.cos(phi) * 0.7;
+                const z = r * Math.sin(phi) * Math.sin(theta);
 
                 positions.push(x, y, z);
+                pts.push(new THREE.Vector3(x, y, z));
 
-                // 距離と乱数による「超・滑らかな」グラデーション計算
-                const mixFactor = (r / 10) + (Math.random() * 0.2);
+                // 距離による「滑らかな」Lerp（線形補間）計算
+                const t = Math.pow(r / 12, 1.5); // 補間のカーブを急に
                 let c = new THREE.Color();
-                if (mixFactor < 0.4) {
-                    c.copy(colorCrimson).lerp(colorAmber, mixFactor * 2.5);
-                } else {
-                    c.copy(colorAmber).lerp(colorGold, (mixFactor - 0.4) * 1.6);
-                }
+                c.copy(colorDeepCrimson).lerp(colorBrightGold, t);
                 colors.push(c.r, c.g, c.b);
             }
 
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
             geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
+            // キラメキ（発光）を最大化するマテリアル設定
             const pointMaterial = new THREE.PointsMaterial({
-                size: 0.55,
-                map: createJewelTexture(),
+                size: 0.65,                    // 芯を大きく
+                map: createRadiantTexture(), // テクスチャを滑らかに
                 vertexColors: true,
                 transparent: true,
-                opacity: 0.6,
-                blending: THREE.AdditiveBlending,
+                opacity: 0.9,                  // 不透明度を上げて発光を強める
+                blending: THREE.AdditiveBlending, // 加算合成で白熱させる
                 depthWrite: false
             });
 
-            scene.add(new THREE.Points(geometry, pointMaterial));
+            points = new THREE.Points(geometry, pointMaterial);
+            scene.add(points);
+
+            // 繊細な「金の糸（骨格）」の復活
+            const linePositions = [];
+            for (let i = 0; i < pts.length; i++) {
+                for (let j = i + 1; j < pts.length; j++) {
+                    const dist = pts[i].distanceTo(pts[j]);
+                    // 以前より閾値を広げ、かつ乱数でランダム性を
+                    if (dist < 4.8 && Math.random() > 0.9) {
+                        linePositions.push(pts[i].x, pts[i].y, pts[i].z, pts[j].x, pts[j].y, pts[j].z);
+                    }
+                }
+            }
+
+            const lineGeometry = new THREE.BufferGeometry();
+            lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+
+            const lineMaterial = new THREE.LineBasicMaterial({
+                color: 0xD4AF37, // 黄金色
+                transparent: true,
+                opacity: 0.08,   // 極限まで細く、淡く（主張しすぎないように）
+                blending: THREE.AdditiveBlending
+            });
+            
+            lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+            scene.add(lines);
         }
 
         function animate() {
