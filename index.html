@@ -24,16 +24,16 @@
     <script>
         let scene, camera, renderer, controls, points, lines;
 
-        // 【改良】中心をより鋭く、強く発光させるテクスチャ
-        function createSuperRadiantTexture() {
+        // 【極秘修正】中心部の白熱エリアを強烈に広げた高光沢テクスチャ
+        function createIntenseRadiantTexture() {
             const canvas = document.createElement('canvas');
             canvas.width = 128; canvas.height = 128;
             const context = canvas.getContext('2d');
             const gradient = context.createRadialGradient(64, 64, 0, 64, 64, 64);
-            gradient.addColorStop(0, 'rgba(255,255,255,1.0)');   // 核心：純白（最強）
-            gradient.addColorStop(0.05, 'rgba(255,255,255,1.0)'); // 明るい範囲を拡大
-            gradient.addColorStop(0.2, 'rgba(255,255,255,0.6)');  // 中間の光
-            gradient.addColorStop(0.5, 'rgba(255,255,255,0.1)');  // 淡い余韻
+            gradient.addColorStop(0, 'rgba(255,255,255,1.0)');   // 核心：純白
+            gradient.addColorStop(0.1, 'rgba(255,255,255,1.0)'); // 【昨日を超えさせるための白の拡大】
+            gradient.addColorStop(0.3, 'rgba(255,255,255,0.7)'); // 強い光
+            gradient.addColorStop(0.6, 'rgba(255,255,255,0.1)'); // 外縁
             gradient.addColorStop(1, 'rgba(255,255,255,0)');
             context.fillStyle = gradient;
             context.fillRect(0, 0, 128, 128);
@@ -43,7 +43,7 @@
         function init() {
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 8, 22);
+            camera.position.set(0, 10, 24);
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -67,30 +67,26 @@
             const positions = [];
             const colors = [];
             const pts = [];
-            const numPoints = 1500; // 昨日の密度を超える増量
+            const numPoints = 1400; // 昨日の密度に匹敵するボリューム
 
-            const colorA = new THREE.Color(0xff1100); // 鮮烈な赤
-            const colorB = new THREE.Color(0xffcc00); // 輝く黄金
-            const colorC = new THREE.Color(0xffffff); // 発光の白
+            const colorCrimson = new THREE.Color(0xff1100); // 昨日の赤
+            const colorGold = new THREE.Color(0xffcc00);    // 昨日の金
 
             for (let i = 0; i < numPoints; i++) {
+                const r = 8 + Math.random() * 4;
                 const theta = Math.random() * Math.PI * 2;
                 const phi = Math.acos((Math.random() * 2) - 1);
-                const r = 7 + Math.random() * 5;
-                const x = r * Math.sin(phi) * Math.cos(theta) * 1.6;
-                const y = r * Math.cos(phi) * 0.8;
+                
+                const x = r * Math.sin(phi) * Math.cos(theta) * 1.5;
+                const y = r * Math.cos(phi) * 0.7;
                 const z = r * Math.sin(phi) * Math.sin(theta);
 
                 positions.push(x, y, z);
                 pts.push(new THREE.Vector3(x, y, z));
 
-                const t = Math.pow(r / 12, 1.2);
+                const t = Math.pow(r / 12, 1.3);
                 let c = new THREE.Color();
-                if (t < 0.6) {
-                    c.copy(colorA).lerp(colorB, t / 0.6);
-                } else {
-                    c.copy(colorB).lerp(colorC, (t - 0.6) / 0.4);
-                }
+                c.copy(colorCrimson).lerp(colorGold, t);
                 colors.push(c.r, c.g, c.b);
             }
 
@@ -98,11 +94,11 @@
             geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
             const pointMaterial = new THREE.PointsMaterial({
-                size: 0.8, // サイズを拡大して光の重なりを増強
-                map: createSuperRadiantTexture(),
+                size: 0.95,                    // サイズを拡大
+                map: createIntenseRadiantTexture(),
                 vertexColors: true,
                 transparent: true,
-                opacity: 1.0, // 不透明度を最大にして発光
+                opacity: 1.0,                  // 昨日の熱量を取り戻すために不透明度MAX
                 blending: THREE.AdditiveBlending,
                 depthWrite: false
             });
@@ -110,12 +106,12 @@
             points = new THREE.Points(geometry, pointMaterial);
             scene.add(points);
 
-            // 【復活】極細の金の糸
+            // 金の糸（骨格）
             const linePositions = [];
             for (let i = 0; i < pts.length; i++) {
                 for (let j = i + 1; j < pts.length; j++) {
                     const dist = pts[i].distanceTo(pts[j]);
-                    if (dist < 4.0 && Math.random() > 0.92) {
+                    if (dist < 4.5 && Math.random() > 0.92) {
                         linePositions.push(pts[i].x, pts[i].y, pts[i].z, pts[j].x, pts[j].y, pts[j].z);
                     }
                 }
@@ -125,7 +121,7 @@
             const lineMaterial = new THREE.LineBasicMaterial({
                 color: 0xffaa00,
                 transparent: true,
-                opacity: 0.15,
+                opacity: 0.12,
                 blending: THREE.AdditiveBlending
             });
             lines = new THREE.LineSegments(lineGeometry, lineMaterial);
