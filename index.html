@@ -8,25 +8,17 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <style>
         body { margin: 0; background-color: #000000; overflow: hidden; font-family: 'Times New Roman', serif; }
-        canvas { display: block; }
-        
         #title {
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            color: #FFFFFF;
-            z-index: 10;
-            pointer-events: none;
-            letter-spacing: 0.2em;
-            line-height: 1.6;
+            position: absolute; top: 30px; left: 30px; color: #FFFFFF;
+            z-index: 10; pointer-events: none; letter-spacing: 0.2em; line-height: 1.6;
         }
     </style>
 </head>
 <body>
     <div id="title">
-        <div style="font-size: 16px; font-style: italic; opacity: 0.9;">THE IRON SKELETON</div>
-        <div style="font-size: 14px; opacity: 0.7;">NIKKEI 225 TOPOLOGY // jewel</div>
-        <div style="font-size: 12px; opacity: 0.5;">56,078.83 // 08 APRIL 2026</div>
+        <div style="font-size: 15px; font-style: italic; opacity: 0.9;">THE IRON SKELETON</div>
+        <div style="font-size: 13px; opacity: 0.7;">NIKKEI 225 TOPOLOGY // jewel</div>
+        <div style="font-size: 11px; opacity: 0.5;">08 // APRIL // 2026</div>
     </div>
 
     <script>
@@ -34,10 +26,8 @@
 
         function init() {
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x000000);
-
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 8, 20);
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 10, 20);
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -46,89 +36,83 @@
 
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
-            controls.autoRotate = true; 
-            controls.autoRotateSpeed = 0.5; // より優雅な回転速度へ
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.4; // より重厚な回転へ
 
             createStructure();
             animate();
         }
 
         function createStructure() {
-            if (points) scene.remove(points);
-            if (lines) scene.remove(lines);
-
             const geometry = new THREE.BufferGeometry();
             const positions = [];
             const colors = [];
             const pts = [];
-            
-            const numPoints = 169; // 観測銘柄数に合わせた密度感
+            const numPoints = 200;
+
+            // 色のグラデーション関数（赤から黄金へのシームレスな移行）
+            const colorA = new THREE.Color(0xff2200); // 深い紅
+            const colorB = new THREE.Color(0xffd700); // 黄金
+            const colorC = new THREE.Color(0xffffff); // 純白
 
             for (let i = 0; i < numPoints; i++) {
-                // PCAの結果を模した楕円体構造
-                const x = (Math.random() - 0.5) * 15;
-                const y = (Math.random() - 0.5) * 8;
-                const z = (Math.random() - 0.5) * 15;
-                
+                const x = (Math.random() - 0.5) * 16;
+                const y = (Math.random() - 0.5) * 10;
+                const z = (Math.random() - 0.5) * 16;
                 positions.push(x, y, z);
                 pts.push(new THREE.Vector3(x, y, z));
 
-                // Jewel色彩ロジック：黄金から微かな紅へ
-                const rand = Math.random();
-                if (rand > 0.85) {
-                    colors.push(1.0, 1.0, 1.0); // ダイヤモンド
-                } else if (rand > 0.6) {
-                    colors.push(0.9, 0.2, 0.3); // 微かな紅（ルビー）
+                const t = Math.random();
+                let finalColor = new THREE.Color();
+                if (t < 0.7) {
+                    finalColor.copy(colorA).lerp(colorB, t / 0.7); // 赤〜オレンジ〜黄金の滑らかな混色
                 } else {
-                    colors.push(0.83, 0.68, 0.21); // 黄金
+                    finalColor.copy(colorB).lerp(colorC, (t - 0.7) / 0.3); // 黄金〜白への輝き
                 }
+                colors.push(finalColor.r, finalColor.g, finalColor.b);
             }
 
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
             geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-            const pointMaterial = new THREE.PointsMaterial({ 
-                size: 0.25, 
+            // キラメキを最大化するマテリアル設定
+            const pointMaterial = new THREE.PointsMaterial({
+                size: 0.4,
                 vertexColors: true,
                 transparent: true,
-                opacity: 0.9,
-                blending: THREE.AdditiveBlending 
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending, // 重なった箇所が白熱する
+                depthWrite: false
             });
 
             points = new THREE.Points(geometry, pointMaterial);
             scene.add(points);
 
-            // 繊細な「金の糸」
+            // 金糸の構造
             const linePositions = [];
-            const threshold = 5.0; 
-
             for (let i = 0; i < pts.length; i++) {
                 for (let j = i + 1; j < pts.length; j++) {
                     const dist = pts[i].distanceTo(pts[j]);
-                    if (dist < threshold && Math.random() > 0.8) {
-                        linePositions.push(pts[i].x, pts[i].y, pts[i].z);
-                        linePositions.push(pts[j].x, pts[j].y, pts[j].z);
+                    if (dist < 4.5 && Math.random() > 0.85) {
+                        linePositions.push(pts[i].x, pts[i].y, pts[i].z, pts[j].x, pts[j].y, pts[j].z);
                     }
                 }
             }
-
             const lineGeometry = new THREE.BufferGeometry();
             lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-
-            const lineMaterial = new THREE.LineBasicMaterial({ 
-                color: 0xD4AF37, 
-                transparent: true, 
-                opacity: 0.15, // 極細の糸のような質感
-                blending: THREE.AdditiveBlending 
+            const lineMaterial = new THREE.LineBasicMaterial({
+                color: 0xffaa00,
+                transparent: true,
+                opacity: 0.1,
+                blending: THREE.AdditiveBlending
             });
-            
             lines = new THREE.LineSegments(lineGeometry, lineMaterial);
             scene.add(lines);
         }
 
         function animate() {
             requestAnimationFrame(animate);
-            controls.update(); 
+            controls.update();
             renderer.render(scene, camera);
         }
 
